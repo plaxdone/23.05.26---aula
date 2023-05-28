@@ -77,7 +77,9 @@ final['delivery_time'] = ll
 final = final[(final['order_purchase_timestamp'].dt.year > 2016) 
               & 
               (final['order_purchase_timestamp'] < pd.to_datetime('20180901'))
+              &
+              (final['customer_state'] == 'PR')
              ]
 final = final.reset_index(drop=True)
 # final.info()
-final.to_csv("data.csv")
+final.to_csv("dataPR.csv")
