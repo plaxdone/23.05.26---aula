@@ -22,6 +22,7 @@ files = {'customers'    : 'C:\\Users\\Jorge\\IFPR\\20 - Aprendizado de maquina\\
          'products'     : 'C:\\Users\\Jorge\\IFPR\\20 - Aprendizado de maquina\\23.05.26 - aula\\archive\\olist_products_dataset.csv',
          'sellers'      : 'C:\\Users\\Jorge\\IFPR\\20 - Aprendizado de maquina\\23.05.26 - aula\\archive\\olist_sellers_dataset.csv',
          'review'       : 'C:\\Users\\Jorge\\IFPR\\20 - Aprendizado de maquina\\23.05.26 - aula\\archive\\olist_order_reviews_dataset.csv',
+         'populacao'    : 'C:\\Users\\Jorge\\IFPR\\20 - Aprendizado de maquina\\23.05.26 - aula\\archive\\populacao.csv',
          }
 
 dfs = {}
@@ -34,11 +35,14 @@ customers_location = dfs['customers'].merge(dfs['geolocation'], how='inner', lef
 cusloc_order = customers_location.merge(dfs['orders'], how='inner', on='customer_id')
 cuslocord_item = cusloc_order.merge(dfs['items'], how='inner', on='order_id')
 cuslocordite_prod = cuslocord_item.merge(dfs['products'], how='inner', on='product_id')
-cuslocordite_rev= cuslocordite_prod.merge(dfs['review'], how='left', on='order_id')
+print(cuslocordite_prod)
+cuslocordite_pop = cuslocordite_prod.merge(dfs['populacao'], how='inner', on='customer_city')
+print(cuslocordite_pop)
+cuslocordite_rev= cuslocordite_pop.merge(dfs['review'], how='left', on='order_id')
 
 # Selecionando as colunas de interesse
 final = cuslocordite_rev[['customer_id', 'customer_unique_id', 'customer_zip_code_prefix',
-       'customer_city', 'customer_state',
+       'customer_city', 'pop', 'customer_state',
        'geolocation_lat', 'geolocation_lng','order_id', 'order_status',
        'order_purchase_timestamp', 'order_approved_at',
        'order_delivered_carrier_date', 'order_delivered_customer_date',
@@ -79,7 +83,9 @@ final = final[(final['order_purchase_timestamp'].dt.year > 2016)
               (final['order_purchase_timestamp'] < pd.to_datetime('20180901'))
               &
               (final['customer_state'] == 'PR')
+              &
+              (final['price'] <= 200)
              ]
 final = final.reset_index(drop=True)
 # final.info()
-final.to_csv("dataPR.csv")
+final.to_csv("dataPR3.csv")
