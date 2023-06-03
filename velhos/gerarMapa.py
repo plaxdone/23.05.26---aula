@@ -2,11 +2,11 @@ import pandas as pd
 import geopandas as gpd
 import folium, webbrowser
 import matplotlib.pyplot as plt
-df = pd.read_csv("dataPR2.csv", na_values=[" "])
+df = pd.read_csv("./data/dataPR2.csv", na_values=[" "])
 df = df[["customer_city", "price"]]
 
 
-mun_geo = "new_munic.json"
+mun_geo = "./geoJson/new_munic.json"
 state_geo = "Brasil.json"
 pr_geo = "PR.json"
 
@@ -22,7 +22,7 @@ fig, ax = plt.subplots(1, figsize=(8, 8))
 final_df.plot(column="price", cmap="PiYG", linewidth=0.4, ax=ax, edgecolor=".4")
 min = df['price'].min()
 max = df['price'].max()
-print(min)
+#print(min)
 bar_info = plt.cm.ScalarMappable(cmap="PiYG", norm=plt.Normalize(vmin=min, vmax=max))
 bar_info._A = []
 cbar = fig.colorbar(bar_info)

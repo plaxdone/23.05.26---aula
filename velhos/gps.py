@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import webbrowser
 
-file_url = "dataPR.csv"
+file_url = "./data/dataPR.csv"
 data = pd.read_csv(file_url)
 features = data[['geolocation_lat', 'geolocation_lng']]
 X = np.array(features)

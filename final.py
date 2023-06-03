@@ -29,7 +29,7 @@ geoJSON_df = gpd.read_file(mun_geo)
 geoJSON_df = geoJSON_df.rename(columns = {"NOME":"customer_city"})
 final_df = geoJSON_df.merge(final_df, on = "customer_city")
 
-# print(final_df.head())
+print(final_df.head())
 
 # # função para criar map em diferentes classificadores
 
@@ -122,6 +122,7 @@ def f(x):
     plt.scatter(centroids[:,0], centroids[:,1], s=200, c='#000000', marker='v')
     plt.ylim([-15,15]); plt.xlim([-15,15])
     plt.title('How K-Means Clusters')
+    #plt.show()
 
 interactive_plot = interactive(f, x=(1, 20))
 output = interactive_plot.children[-1]
@@ -133,18 +134,19 @@ k = 70
 model = KMeans(n_clusters=k, random_state=17).fit(X)
 class_predictions = model.predict(X)
 final_df[f'CLUSTER_kmeans{k}'] = class_predictions
+final_df.to_csv("ver.csv")
 
-print(final_df.head())
+## print(final_df.head())
 
 
 
 
 m = create_map(final_df, 'CLUSTER_kmeans70')
-print(f'K={k}')
-print(f'Silhouette Score: {silhouette_score(X, class_predictions)}')
+# print(f'K={k}')
+# print(f'Silhouette Score: {silhouette_score(X, class_predictions)}')
 
-m.save('kmeans_70.html')
-webbrowser.open("kmeans_70.html")
+# m.save('kmeans_70.html')
+# webbrowser.open("kmeans_70.html")
 
 '''
 best_silhouette, best_k = -1, 0
@@ -175,17 +177,17 @@ final_df['CLUSTERS_DBSCAN'] = class_predictions
 m = create_map(final_df, 'CLUSTERS_DBSCAN')
 
     
-print(f'Number of clusters found: {len(np.unique(class_predictions))}')
-print(f'Number of outliers found: {len(class_predictions[class_predictions==-1])}')
+# print(f'Number of clusters found: {len(np.unique(class_predictions))}')
+# print(f'Number of outliers found: {len(class_predictions[class_predictions==-1])}')
 
-print(f'Silhouette ignoring outliers: {silhouette_score(X[class_predictions!=-1], class_predictions[class_predictions!=-1])}')
+# print(f'Silhouette ignoring outliers: {silhouette_score(X[class_predictions!=-1], class_predictions[class_predictions!=-1])}')
 
-no_outliers = 0
-no_outliers = np.array([(counter+2)*x if x==-1 else x for counter, x in enumerate(class_predictions)])
-print(f'Silhouette outliers as singletons: {silhouette_score(X, no_outliers)}')
+# no_outliers = 0
+# no_outliers = np.array([(counter+2)*x if x==-1 else x for counter, x in enumerate(class_predictions)])
+# print(f'Silhouette outliers as singletons: {silhouette_score(X, no_outliers)}')
 
-m.save('dbscan.html')
-webbrowser.open("dbscan.html")
+# m.save('dbscan.html')
+# webbrowser.open("dbscan.html")
 
 
 
@@ -200,16 +202,16 @@ final_df['CLUSTER_HDBSCAN'] = class_predictions
 
 m = create_map(final_df, 'CLUSTER_HDBSCAN')
 
-print(f'Number of clusters found: {len(np.unique(class_predictions))-1}')
-print(f'Number of outliers found: {len(class_predictions[class_predictions==-1])}')
+# print(f'Number of clusters found: {len(np.unique(class_predictions))-1}')
+# print(f'Number of outliers found: {len(class_predictions[class_predictions==-1])}')
 
-print(f'Silhouette ignoring outliers: {silhouette_score(X[class_predictions!=-1], class_predictions[class_predictions!=-1])}')
+# print(f'Silhouette ignoring outliers: {silhouette_score(X[class_predictions!=-1], class_predictions[class_predictions!=-1])}')
 
-no_outliers = np.array([(counter+2)*x if x==-1 else x for counter, x in enumerate(class_predictions)])
-print(f'Silhouette outliers as singletons: {silhouette_score(X, no_outliers)}')
+# no_outliers = np.array([(counter+2)*x if x==-1 else x for counter, x in enumerate(class_predictions)])
+# print(f'Silhouette outliers as singletons: {silhouette_score(X, no_outliers)}')
 
-m.save('hdbscan.html')
-webbrowser.open("hdbscan.html")
+# m.save('hdbscan.html')
+# webbrowser.open("hdbscan.html")
 
 
 '''

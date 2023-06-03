@@ -5,7 +5,7 @@ from folium.plugins import StripePattern
 import geopandas as gpd
 import numpy as np
 # Next we import the data. 
-df = pd.read_csv("dataPR.csv")
+df = pd.read_csv("./data/dataPR.csv")
 
 # We grab the state and wills column
 df = df[["customer_city", "price"]]
@@ -13,7 +13,7 @@ df = df[["customer_city", "price"]]
 # print(df.head())
 
 # We import the geoJSON file. 
-state_geo = "new_munic.json"
+state_geo = "./geoJson/new_munic.json"
 
 # We read the file and print it.
 geoJSON_df = gpd.read_file(state_geo)
