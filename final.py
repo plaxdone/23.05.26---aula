@@ -27,10 +27,11 @@ mun_geo = "./geoJson/new_munic.json"
 geoJSON_df = gpd.read_file(mun_geo)
 
 geoJSON_df = geoJSON_df.rename(columns = {"NOME":"customer_city"})
+print(geoJSON_df)
+print(final_df)
 final_df = geoJSON_df.merge(final_df, on = "customer_city")
 
 print(final_df.head())
-
 # # função para criar map em diferentes classificadores
 
 def create_map(df, cluster_column):
